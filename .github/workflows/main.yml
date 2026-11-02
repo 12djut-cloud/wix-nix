@@ -8,6 +8,11 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Select newest Xcode
+        run: |
+          XC=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XC" ]; then sudo xcode-select -s "$XC/Contents/Developer"; fi
+          xcodebuild -version
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Generate project
@@ -26,3 +31,4 @@ jobs:
         with:
           name: Vynox-ipa
           path: Vynox.ipa
+
